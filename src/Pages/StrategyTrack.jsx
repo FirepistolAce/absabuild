@@ -30,7 +30,7 @@ const TRACKS = {
     ],
     priorities: ['Aggressive deposit accumulation', 'Clearing high-interest debt for better bond qualification', 'Credit score management (Experian / TransUnion)', 'Minimising new depreciating asset commitments'],
     avoids: ['New vehicle finance that reduces bond qualifying amount', 'Offshore investment that locks up liquidity', 'Lifestyle spend competing with the deposit target'],
-  },
+  }, 
   'balanced': {
     id: 'balanced',
     number: '02',
