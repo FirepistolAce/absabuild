@@ -502,5 +502,6 @@ const styles = {
   eduLabel: { fontSize: '10px', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: '#4B44A8', marginBottom: '4px' },
   eduTitle: { fontSize: '13px', fontWeight: 500, color: 'rgba(255,255,255,0.8)' },
 }
+// this works but could probably be cleaner - revisit
 
 export default MoneySnapshot

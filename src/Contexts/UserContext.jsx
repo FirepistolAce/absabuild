@@ -60,7 +60,8 @@ export function UserProvider({ children }) {
     }))
   }
 
-  const calculateTakeHome = () => {
+  const calculateTakeHome = () => { // SARS 2024/25 brackets - checked against SARS website
+// primary rebate R17,235 reduces final tax owed
     const gross = profile.grossSalary
     if (!gross) return 0
 

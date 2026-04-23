@@ -122,7 +122,7 @@ function PropertyStudio({ onBack, profile }) {
     appreciation: 5,
     investReturn: 10,
   })
-  const [showVerdict, setShowVerdict] = useState(false)
+  const [showVerdict, setShowVerdict] = useState(false)      
 
   const upd = (key, val) => setInputs(prev => ({ ...prev, [key]: +val }))
   const fmt = (n) => `R${Math.round(n).toLocaleString('en-ZA')}`
@@ -260,7 +260,8 @@ function CarStudio({ onBack, profile }) {
     rate: 13.25,
     investReturn: 10,
   })
-  const [showVerdict, setShowVerdict] = useState(false)
+  const [showVerdict, setShowVerdict] = useState(false)    // future value of monthly contributions formula
+// FV = PMT × ((1 + r)^n - 1) / r
 
   const upd = (key, val) => setInputs(prev => ({ ...prev, [key]: +val }))
   const fmt = (n) => `R${Math.round(n).toLocaleString('en-ZA')}`
