@@ -7,7 +7,7 @@ import StrategyTrack from './Pages/StrategyTrack'
 import SimulationLab from './Pages/SimulationLab'
 import './App.css'
 
-function App() {
+function App() { 
   return (
     <UserProvider>
       <div className="app">
