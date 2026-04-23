@@ -564,5 +564,5 @@ const styles = {
   explainerRow: { display: 'flex', gap: '8px', flexWrap: 'wrap' },
   explainerLink: { background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '6px', padding: '6px 12px', fontSize: '11px', color: '#4B44A8', cursor: 'pointer' },
 }
-
+//styling works but could be cleaner and elsewhere 
 export default SimulationLab

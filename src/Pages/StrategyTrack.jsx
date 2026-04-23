@@ -391,5 +391,7 @@ const styles = {
   nudgeDot: { width: '6px', height: '6px', borderRadius: '50%', flexShrink: 0, marginTop: '5px' },
   nudgeText: { fontSize: '12px', color: 'rgba(255,255,255,0.45)', lineHeight: 1.55, fontStyle: 'italic' },
 }
+// this works but could probably be cleaner - revisit
+
 
 export default StrategyTrack
