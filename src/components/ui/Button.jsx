@@ -1,3 +1,6 @@
+// Reusable button component
+// Supports multiple variants, sizes, and states
+
 function Button({
   children,
   onClick,
@@ -23,6 +26,7 @@ function Button({
     letterSpacing: '0.01em',
     width: fullWidth ? '100%' : 'auto',
     textDecoration: 'none',
+    lineHeight: 1.4,
   }
 
   const sizes = {
@@ -33,7 +37,7 @@ function Button({
 
   const variants = {
     primary: {
-      background: '#CC0000',
+      background: 'var(--color-red)',
       color: '#FFFFFF',
     },
     secondary: {
@@ -43,21 +47,26 @@ function Button({
     },
     outline: {
       background: 'transparent',
-      color: '#CC0000',
-      border: '1px solid #CC0000',
+      color: 'var(--color-red)',
+      border: '1px solid var(--color-red)',
     },
     teal: {
-      background: '#0D7A5F',
+      background: 'var(--color-teal)',
       color: '#FFFFFF',
     },
     purple: {
-      background: '#4B44A8',
+      background: 'var(--color-purple)',
       color: '#FFFFFF',
     },
     ghost: {
       background: 'transparent',
       color: 'rgba(255,255,255,0.6)',
       border: '1px solid rgba(255,255,255,0.12)',
+    },
+    danger: {
+      background: 'rgba(204,0,0,0.12)',
+      color: 'var(--color-red)',
+      border: '1px solid rgba(204,0,0,0.25)',
     },
   }
 

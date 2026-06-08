@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { useUser } from '../Contexts/UserContext'
+import { useUser } from '../../context/UserContext'
 
 function Navigation() {
   const { isLoggedIn, user, logout } = useUser()
@@ -9,9 +9,11 @@ function Navigation() {
   const [menuOpen, setMenuOpen] = useState(false)
 
   const navLinks = [
+    { path: '/dashboard', label: 'Dashboard' },
     { path: '/snapshot', label: 'Snapshot' },
     { path: '/tracks', label: 'Strategy Tracks' },
     { path: '/simulation', label: 'Simulation Lab' },
+    { path: '/glossary', label: 'Glossary' },
   ]
 
   const isActive = (path) => location.pathname.startsWith(path)
@@ -22,17 +24,25 @@ function Navigation() {
     setMenuOpen(false)
   }
 
+  const handleLogoClick = () => {
+    if (isLoggedIn) {
+      navigate('/dashboard')
+    } else {
+      navigate('/')
+    }
+  }
+
   const initials = user?.name
     ? user.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)
-    : 'KM'
+    : '?'
 
   return (
     <nav style={styles.nav}>
       <div style={styles.inner}>
-        <Link to="/" style={styles.logo}>
+        <div onClick={handleLogoClick} style={styles.logo}>
           <span style={styles.logoAbsa}>ABSA</span>
           <span style={styles.logoStudio}>NextGen</span>
-        </Link>
+        </div>
 
         {isLoggedIn && (
           <div style={styles.links}>
@@ -63,17 +73,33 @@ function Navigation() {
                 {initials}
               </button>
               {menuOpen && (
-                <div style={styles.dropdown}>
-                  <div style={styles.dropdownName}>{user?.name}</div>
-                  <div style={styles.dropdownDivider} />
-                  <button style={styles.dropdownItem} onClick={handleLogout}>
-                    Sign out
-                  </button>
-                </div>
+                <>
+                  <div
+                    onClick={() => setMenuOpen(false)}
+                    style={styles.menuOverlay}
+                  />
+                  <div style={styles.dropdown}>
+                    <div style={styles.dropdownName}>{user?.name}</div>
+                    <div style={styles.dropdownEmail}>{user?.email}</div>
+                    <div style={styles.dropdownDivider} />
+                    <button
+                      style={styles.dropdownItem}
+                      onClick={() => { navigate('/snapshot'); setMenuOpen(false) }}
+                    >
+                      Edit Snapshot
+                    </button>
+                    <button
+                      style={{ ...styles.dropdownItem, color: '#CC0000' }}
+                      onClick={handleLogout}
+                    >
+                      Sign out
+                    </button>
+                  </div>
+                </>
               )}
             </div>
           ) : (
-            <Link to="/" style={styles.signInLink}>Sign in</Link>
+            <Link to="/auth" style={styles.signInLink}>Sign in</Link>
           )}
         </div>
       </div>
@@ -105,6 +131,7 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     gap: '8px',
+    cursor: 'pointer',
     textDecoration: 'none',
   },
   logoAbsa: {
@@ -116,13 +143,12 @@ const styles = {
   logoStudio: {
     fontSize: '13px',
     fontWeight: 500,
-    color: 'rgba(255,255,255,0.45)',
-    letterSpacing: '0.02em',
+    color: 'rgba(255,255,255,0.4)',
   },
   links: {
     display: 'flex',
     alignItems: 'center',
-    gap: '32px',
+    gap: '28px',
   },
   link: {
     fontSize: '13px',
@@ -131,7 +157,6 @@ const styles = {
     textDecoration: 'none',
     position: 'relative',
     paddingBottom: '2px',
-    transition: 'color 0.2s',
   },
   linkActive: {
     color: '#FFFFFF',
@@ -168,6 +193,11 @@ const styles = {
     justifyContent: 'center',
     fontFamily: 'var(--font-family)',
   },
+  menuOverlay: {
+    position: 'fixed',
+    inset: 0,
+    zIndex: 98,
+  },
   dropdown: {
     position: 'absolute',
     top: 'calc(100% + 8px)',
@@ -176,13 +206,20 @@ const styles = {
     border: '1px solid rgba(255,255,255,0.1)',
     borderRadius: '10px',
     padding: '8px',
-    minWidth: '160px',
+    minWidth: '180px',
     boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
+    zIndex: 99,
   },
   dropdownName: {
-    fontSize: '12px',
-    color: 'rgba(255,255,255,0.5)',
-    padding: '6px 10px',
+    fontSize: '13px',
+    fontWeight: 600,
+    color: '#fff',
+    padding: '6px 10px 2px',
+  },
+  dropdownEmail: {
+    fontSize: '11px',
+    color: 'rgba(255,255,255,0.35)',
+    padding: '0 10px 6px',
   },
   dropdownDivider: {
     height: '1px',
@@ -194,14 +231,13 @@ const styles = {
     textAlign: 'left',
     background: 'none',
     border: 'none',
-    color: '#CC0000',
+    color: 'rgba(255,255,255,0.7)',
     fontSize: '13px',
     fontWeight: 500,
     padding: '8px 10px',
     borderRadius: '6px',
     cursor: 'pointer',
     fontFamily: 'var(--font-family)',
-    transition: 'background 0.15s',
   },
   signInLink: {
     fontSize: '13px',
