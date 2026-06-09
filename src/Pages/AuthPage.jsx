@@ -7,7 +7,7 @@ function AuthPage() {
   const { isLoggedIn, login, register } = useUser()
   const navigate = useNavigate()
   const [mode, setMode] = useState('login')
-  const [form, setForm] = useState({ name: '', email: '', password: '', confirm: '' })
+  const [form, setForm] = useState({ name: '', email: '', password: '', confirmPassword: '' })
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
@@ -15,8 +15,8 @@ function AuthPage() {
     if (isLoggedIn) navigate('/dashboard')
   }, [isLoggedIn, navigate])
 
-  const upd = (key, val) => {
-    setForm(prev => ({ ...prev, [key]: val }))
+  const update = (field, value) => {
+    setForm(prev => ({ ...prev, [field]: value }))
     setError('')
   }
 
@@ -29,11 +29,11 @@ function AuthPage() {
       if (!form.name.trim()) { setError('Please enter your full name.'); setLoading(false); return }
       if (!form.email.includes('@')) { setError('Please enter a valid email address.'); setLoading(false); return }
       if (form.password.length < 6) { setError('Password must be at least 6 characters.'); setLoading(false); return }
-      if (form.password !== form.confirm) { setError('Passwords do not match.'); setLoading(false); return }
+      if (form.password !== form.confirmPassword) { setError('Passwords do not match.'); setLoading(false); return }
       const result = register(form.name.trim(), form.email.trim(), form.password)
       if (!result.success) { setError(result.error); setLoading(false); return }
     } else {
-      if (!form.email) { setError('Please enter your email address.'); setLoading(false); return }
+      if (!form.email.includes('@')) { setError('Please enter a valid email address.'); setLoading(false); return }
       if (!form.password) { setError('Please enter your password.'); setLoading(false); return }
       const result = login(form.email.trim(), form.password)
       if (!result.success) { setError(result.error); setLoading(false); return }
@@ -45,83 +45,80 @@ function AuthPage() {
 
   return (
     <div style={styles.page}>
-      <div style={styles.left}>
-        <div style={styles.leftInner}>
-          <div style={styles.leftLogo}>
-            <span style={styles.logoRed}>ABSA</span>
-            <span style={styles.logoGrey}>NextGen Wealth Studio</span>
-          </div>
-          <h1 style={styles.leftTitle}>
-            Your first five years.<br />
-            <span style={styles.leftAccent}>Done right.</span>
-          </h1>
-          <p style={styles.leftSub}>
-            A financial planning studio built for South African professionals earning R30K–R70K per month.
-          </p>
-          <div style={styles.features}>
-            {[
-              '✓  SARS 2024/25 tax calculations',
-              '✓  Three strategy tracks with milestone tracking',
-              '✓  Simulation Lab — property, car, offshore',
-              '✓  SA financial glossary',
-              '✓  Your data saved between sessions',
-            ].map(f => (
-              <div key={f} style={styles.feature}>{f}</div>
-            ))}
-          </div>
+      <div style={styles.card}>
+        <div style={styles.logoRow}>
+          <span style={styles.logoRed}>ABSA</span>
+          <span style={styles.logoGrey}>NextGen Wealth Studio</span>
         </div>
-      </div>
 
-      <div style={styles.right}>
-        <div style={styles.card}>
-          <div style={styles.tabs}>
-            <button
-              style={{ ...styles.tab, ...(mode === 'login' ? styles.tabActive : {}) }}
-              onClick={() => { setMode('login'); setError('') }}
-            >
-              Sign in
-            </button>
-            <button
-              style={{ ...styles.tab, ...(mode === 'register' ? styles.tabActive : {}) }}
-              onClick={() => { setMode('register'); setError('') }}
-            >
-              Create account
-            </button>
+        <div style={styles.tabs}>
+          <button
+            style={{ ...styles.tab, ...(mode === 'login' ? styles.tabActive : {}) }}
+            onClick={() => { setMode('login'); setError('') }}
+          >
+            Sign in
+          </button>
+          <button
+            style={{ ...styles.tab, ...(mode === 'register' ? styles.tabActive : {}) }}
+            onClick={() => { setMode('register'); setError('') }}
+          >
+            Create account
+          </button>
+        </div>
+
+        <div style={styles.cardBody}>
+          <div style={styles.cardTitle}>
+            {mode === 'login' ? 'Welcome back' : 'Get started free'}
+          </div>
+          <div style={styles.cardSub}>
+            {mode === 'login'
+              ? 'Sign in to access your financial studio.'
+              : 'Set up takes about 5 minutes. No bank account linking required.'}
           </div>
 
           <form onSubmit={handleSubmit} style={styles.form}>
             {mode === 'register' && (
-              <Field
-                label="Full name"
-                value={form.name}
-                onChange={v => upd('name', v)}
-                placeholder="e.g. Kefilwe Molefe"
-                type="text"
-              />
+              <Field label="Full name">
+                <input
+                  style={styles.input}
+                  type="text"
+                  placeholder="e.g. Kefilwe Molefe"
+                  value={form.name}
+                  onChange={e => update('name', e.target.value)}
+                />
+              </Field>
             )}
-            <Field
-              label="Email address"
-              value={form.email}
-              onChange={v => upd('email', v)}
-              placeholder="you@email.com"
-              type="email"
-            />
-            <Field
-              label="Password"
-              value={form.password}
-              onChange={v => upd('password', v)}
-              placeholder="••••••••"
-              type="password"
-              hint={mode === 'register' ? 'Minimum 6 characters' : null}
-            />
-            {mode === 'register' && (
-              <Field
-                label="Confirm password"
-                value={form.confirm}
-                onChange={v => upd('confirm', v)}
-                placeholder="••••••••"
-                type="password"
+
+            <Field label="Email address">
+              <input
+                style={styles.input}
+                type="email"
+                placeholder="you@email.com"
+                value={form.email}
+                onChange={e => update('email', e.target.value)}
               />
+            </Field>
+
+            <Field label="Password" hint={mode === 'register' ? 'Minimum 6 characters' : null}>
+              <input
+                style={styles.input}
+                type="password"
+                placeholder="••••••••"
+                value={form.password}
+                onChange={e => update('password', e.target.value)}
+              />
+            </Field>
+
+            {mode === 'register' && (
+              <Field label="Confirm password">
+                <input
+                  style={styles.input}
+                  type="password"
+                  placeholder="••••••••"
+                  value={form.confirmPassword}
+                  onChange={e => update('confirmPassword', e.target.value)}
+                />
+              </Field>
             )}
 
             {error && (
@@ -135,154 +132,60 @@ function AuthPage() {
               disabled={loading}
               style={{ marginTop: '8px' }}
             >
-              {loading ? 'Please wait...' : mode === 'register' ? 'Create my account' : 'Sign in'}
+              {loading
+                ? 'Please wait...'
+                : mode === 'login'
+                ? 'Sign in'
+                : 'Create account'}
             </Button>
           </form>
 
-          <div style={styles.switchMode}>
-            {mode === 'login' ? (
-              <>
-                Don't have an account?{' '}
-                <span style={styles.switchLink} onClick={() => { setMode('register'); setError('') }}>
-                  Create one free
-                </span>
-              </>
-            ) : (
-              <>
-                Already have an account?{' '}
-                <span style={styles.switchLink} onClick={() => { setMode('login'); setError('') }}>
-                  Sign in
-                </span>
-              </>
-            )}
+          <div style={styles.switchRow}>
+            {mode === 'login'
+              ? <>Don't have an account? <span style={styles.switchLink} onClick={() => { setMode('register'); setError('') }}>Create one free</span></>
+              : <>Already have an account? <span style={styles.switchLink} onClick={() => { setMode('login'); setError('') }}>Sign in</span></>
+            }
           </div>
+        </div>
 
-          <div style={styles.disclaimer}>
-            Not financial advice. Your data is stored locally on your device only.
-          </div>
+        <div style={styles.disclaimer}>
+          Not financial advice · For educational purposes · South African context only
         </div>
       </div>
     </div>
   )
 }
 
-function Field({ label, value, onChange, placeholder, type, hint }) {
+function Field({ label, hint, children }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-      <label style={{ fontSize: '12px', fontWeight: 500, color: 'rgba(255,255,255,0.6)' }}>
-        {label}
-      </label>
-      {hint && <div style={{ fontSize: '11px', color: 'rgba(255,255,255,0.3)' }}>{hint}</div>}
-      <input
-        type={type}
-        value={value}
-        onChange={e => onChange(e.target.value)}
-        placeholder={placeholder}
-        style={{
-          background: 'rgba(255,255,255,0.06)',
-          border: '1px solid rgba(255,255,255,0.12)',
-          borderRadius: '8px',
-          padding: '11px 14px',
-          fontSize: '14px',
-          color: '#fff',
-          width: '100%',
-          fontFamily: 'var(--font-family)',
-          boxSizing: 'border-box',
-        }}
-      />
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <label style={{ fontSize: '13px', fontWeight: 500, color: 'rgba(255,255,255,0.6)' }}>{label}</label>
+        {hint && <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.3)' }}>{hint}</span>}
+      </div>
+      {children}
     </div>
   )
 }
 
 const styles = {
-  page: {
-    minHeight: '100vh',
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr',
-    paddingTop: 'var(--nav-height)',
-  },
-  left: {
-    background: '#1A1A2E',
-    display: 'flex',
-    alignItems: 'center',
-    padding: '48px',
-  },
-  leftInner: { maxWidth: '420px' },
-  leftLogo: { display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '32px' },
-  logoRed: { fontSize: '20px', fontWeight: 800, color: '#CC0000' },
-  logoGrey: { fontSize: '13px', color: 'rgba(255,255,255,0.35)' },
-  leftTitle: { fontSize: '38px', fontWeight: 900, color: '#fff', lineHeight: 1.05, letterSpacing: '-0.025em', marginBottom: '16px' },
-  leftAccent: { color: '#CC0000' },
-  leftSub: { fontSize: '14px', color: 'rgba(255,255,255,0.45)', lineHeight: 1.65, marginBottom: '32px' },
-  features: { display: 'flex', flexDirection: 'column', gap: '10px' },
-  feature: { fontSize: '13px', color: 'rgba(255,255,255,0.55)', lineHeight: 1.5 },
-  right: {
-    background: '#111118',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: '48px',
-  },
-  card: {
-    width: '100%',
-    maxWidth: '400px',
-    background: '#1C1C2E',
-    border: '1px solid rgba(255,255,255,0.08)',
-    borderRadius: '16px',
-    padding: '32px',
-  },
-  tabs: {
-    display: 'flex',
-    background: 'rgba(255,255,255,0.04)',
-    borderRadius: '8px',
-    padding: '4px',
-    marginBottom: '28px',
-    gap: '4px',
-  },
-  tab: {
-    flex: 1,
-    background: 'none',
-    border: 'none',
-    color: 'rgba(255,255,255,0.4)',
-    fontSize: '13px',
-    fontWeight: 500,
-    padding: '8px',
-    borderRadius: '6px',
-    cursor: 'pointer',
-    fontFamily: 'var(--font-family)',
-    transition: 'all 0.2s',
-  },
-  tabActive: {
-    background: '#CC0000',
-    color: '#fff',
-  },
+  page: { minHeight: '100vh', background: '#1A1A2E', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '80px 24px 40px' },
+  card: { background: '#1C1C2E', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '20px', width: '100%', maxWidth: '440px', overflow: 'hidden' },
+  logoRow: { display: 'flex', alignItems: 'center', gap: '8px', padding: '24px 28px 0' },
+  logoRed: { fontSize: '18px', fontWeight: 800, color: '#CC0000', letterSpacing: '0.04em' },
+  logoGrey: { fontSize: '12px', color: 'rgba(255,255,255,0.3)' },
+  tabs: { display: 'flex', margin: '20px 28px 0', background: 'rgba(255,255,255,0.04)', borderRadius: '8px', padding: '3px' },
+  tab: { flex: 1, padding: '8px', fontSize: '13px', fontWeight: 500, border: 'none', background: 'none', color: 'rgba(255,255,255,0.4)', cursor: 'pointer', borderRadius: '6px', fontFamily: 'var(--font-family)', transition: 'all 0.2s' },
+  tabActive: { background: '#CC0000', color: '#fff', fontWeight: 600 },
+  cardBody: { padding: '24px 28px' },
+  cardTitle: { fontSize: '20px', fontWeight: 700, color: '#fff', marginBottom: '6px' },
+  cardSub: { fontSize: '13px', color: 'rgba(255,255,255,0.4)', marginBottom: '24px', lineHeight: 1.55 },
   form: { display: 'flex', flexDirection: 'column', gap: '16px' },
-  error: {
-    background: 'rgba(204,0,0,0.1)',
-    border: '1px solid rgba(204,0,0,0.25)',
-    borderRadius: '8px',
-    padding: '10px 14px',
-    fontSize: '13px',
-    color: '#FF6B6B',
-  },
-  switchMode: {
-    textAlign: 'center',
-    fontSize: '13px',
-    color: 'rgba(255,255,255,0.35)',
-    marginTop: '20px',
-  },
-  switchLink: {
-    color: 'rgba(255,255,255,0.7)',
-    cursor: 'pointer',
-    textDecoration: 'underline',
-  },
-  disclaimer: {
-    textAlign: 'center',
-    fontSize: '11px',
-    color: 'rgba(255,255,255,0.2)',
-    marginTop: '16px',
-    lineHeight: 1.5,
-  },
+  input: { background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '11px 14px', fontSize: '14px', color: '#fff', width: '100%', fontFamily: 'var(--font-family)' },
+  error: { background: 'rgba(204,0,0,0.1)', border: '1px solid rgba(204,0,0,0.25)', borderRadius: '8px', padding: '10px 14px', fontSize: '13px', color: '#FF6B6B', lineHeight: 1.5 },
+  switchRow: { textAlign: 'center', fontSize: '13px', color: 'rgba(255,255,255,0.35)', marginTop: '20px' },
+  switchLink: { color: 'rgba(255,255,255,0.7)', cursor: 'pointer', textDecoration: 'underline', marginLeft: '4px' },
+  disclaimer: { textAlign: 'center', fontSize: '11px', color: 'rgba(255,255,255,0.15)', padding: '16px 28px', borderTop: '1px solid rgba(255,255,255,0.05)' },
 }
 
 export default AuthPage
