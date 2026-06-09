@@ -1,3 +1,5 @@
+/* App-level overrides — kept minimal, tokens live in index.css */
+
 .app {
   display: flex;
   flex-direction: column;
