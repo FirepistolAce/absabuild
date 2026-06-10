@@ -47,7 +47,7 @@ function GlossaryPage() {
         <div style={styles.eyebrow}>SA Financial Glossary</div>
         <h1 style={styles.pageTitle}>Every term. Plain language.</h1>
         <p style={styles.pageSub}>
-          Every financial concept used in this product — explained in South African context.
+          Every financial concept used in this product - explained in South African context.
           PAYE, TFSA, transfer duty, prime rate, CGT, bond registration, and more.
           No jargon without explanation.
         </p>
