@@ -1,6 +1,7 @@
 // Transfer duty calculation - SARS sliding scale
-// This was flagged as incorrect in the MVP - fixed here with full band structure
+//  MVP - fixed here with full band structure, fixed from MVP: previous version skipped the 6% band and used incorrect accumulated values
 // Source: SARS Transfer Duty Guide 2024/25
+// Now correctly implements all 6 SARS bands with proper base amounts
 
 export const calculateTransferDuty = (propertyPrice) => {
   if (!propertyPrice || propertyPrice <= 0) return 0

@@ -1,5 +1,7 @@
 // SARS 2024/25 tax calculations
 // Extracted from UserContext for reusability and testability
+// SARS 2024/25 — brackets verified against sars.gov.za
+// Primary rebate and UIF cap are fixed values for this tax year
 // Brackets verified against SARS website: https://www.sars.gov.za
 
 const TAX_BRACKETS = [

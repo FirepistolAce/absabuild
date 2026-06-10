@@ -7,7 +7,7 @@ import Button from '../components/ui/Button'
 import { formatZAR, formatPercent } from '../utils/formatters'
 import { calculateTransferDuty, getBondRegistrationCost, getConveyancingCost, getTotalUpfrontCosts } from '../utils/transferDuty'
 
-// ─── MAIN EXPORT ─────────────────────────────────────────────────
+// MAIN EXPORT 
 
 function SimulationLab() {
   const { studioId } = useParams()
@@ -27,7 +27,7 @@ function SimulationLab() {
   return null
 }
 
-// ─── LAB OVERVIEW ────────────────────────────────────────────────
+//  LAB OVERVIEW 
 
 function LabOverview({ selectedTrack, navigate }) {
   const studios = [
@@ -134,7 +134,9 @@ function LabOverview({ selectedTrack, navigate }) {
   )
 }
 
-// ─── PROPERTY STUDIO ─────────────────────────────────────────────
+//  PROPERTY STUDIO 
+// Transfer duty pulled from transferDuty.js util — not calculated inline
+// This ensures the same corrected formula is used everywhere in the app
 
 function PropertyStudio({ profile, navigate }) {
   const [inputs, setInputs] = useState({
@@ -150,7 +152,7 @@ function PropertyStudio({ profile, navigate }) {
 
   const upd = (key, val) => setInputs(prev => ({ ...prev, [key]: +val }))
 
-  // ── CORRECT transfer duty using util ──
+  //  CORRECT transfer duty using util 
   const transferDuty = calculateTransferDuty(inputs.propertyPrice)
   const bondAmount = inputs.propertyPrice - inputs.deposit
   const bondReg = getBondRegistrationCost(bondAmount)
@@ -331,7 +333,7 @@ function PropertyStudio({ profile, navigate }) {
   )
 }
 
-// ─── CAR STUDIO ──────────────────────────────────────────────────
+//  CAR STUDIO 
 
 function CarStudio({ profile, navigate }) {
   const [inputs, setInputs] = useState({
@@ -500,7 +502,7 @@ function CarStudio({ profile, navigate }) {
   )
 }
 
-// ─── OFFSHORE STUDIO ─────────────────────────────────────────────
+// OFFSHORE STUDIO 
 
 function OffshoreStudio({ profile, navigate }) {
   const [inputs, setInputs] = useState({
@@ -683,7 +685,7 @@ function OffshoreStudio({ profile, navigate }) {
   )
 }
 
-// ─── SHARED STUDIO COMPONENTS ────────────────────────────────────
+//  SHARED STUDIO COMPONENTS 
 
 function StudioNav({ num, title, color, navigate }) {
   return (
@@ -804,7 +806,7 @@ function KN({ label, val, highlight, warning }) {
   )
 }
 
-// ─── STYLES ──────────────────────────────────────────────────────
+//  STYLES 
 
 const slStyles = {
   wrap: { marginBottom: '20px' },

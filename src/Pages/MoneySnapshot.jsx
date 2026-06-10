@@ -358,7 +358,7 @@ function MoneySnapshot() {
     )
   }
 
-  // ─── DASHBOARD VIEW ──────────────────────────────────────────
+  // DASHBOARD VIEW 
   const totalDebts =
     (profile.studentDebt || 0) +
     (profile.creditCardDebt || 0) +
@@ -415,6 +415,8 @@ function MoneySnapshot() {
   const totalFixed = fixedCategories.reduce((sum, c) => sum + c.value, 0)
 
   // Narrative generation
+  // Generates contextual financial narrative based on the user's actual ratios
+// Avoids generic text - each line responds to the specific numbers
   const getNarrative = () => {
     if (!profile.grossSalary) return null
     const lines = []

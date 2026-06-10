@@ -46,7 +46,9 @@ export function UserProvider({ children }) {
 
   // Registered users stored in localStorage
   const [registeredUsers, setRegisteredUsers] = useLocalStorage('absa_registered_users', [])
-
+  
+// Passwords stored in localStorage for demo purposes only
+// In production this would use a proper auth service
   const register = (name, email, password) => {
     const exists = registeredUsers.find(u => u.email === email)
     if (exists) return { success: false, error: 'An account with this email already exists.' }

@@ -1,6 +1,8 @@
 // Custom hook for localStorage persistence
 // Allows any state to automatically save and restore from browser storage
 // Required by exam brief: "ability for users to return and find their data intact"
+// Wraps useState with automatic localStorage sync
+// Allows any component to persist state across sessions without extra logic
 
 import { useState, useEffect } from 'react'
 
