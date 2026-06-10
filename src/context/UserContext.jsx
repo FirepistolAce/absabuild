@@ -46,7 +46,7 @@ export function UserProvider({ children }) {
 
   // Registered users stored in localStorage
   const [registeredUsers, setRegisteredUsers] = useLocalStorage('absa_registered_users', [])
-  
+
 // Passwords stored in localStorage for demo purposes only
 // In production this would use a proper auth service
   const register = (name, email, password) => {
@@ -128,7 +128,8 @@ export function UserProvider({ children }) {
       (profile.personalLoanDebt || 0)
     return assets - liabilities
   }
-
+// 60% is the recommended ceiling for SA financial planning
+// above 75% leaves almost no room to save or invest
   const calculateFixedCostLoad = () => {
     const takeHome = calculateTakeHome()
     if (!takeHome) return 0
